@@ -1,6 +1,7 @@
 import AppError from "../utils/appError.js";
+import type { Request, Response } from "express";
 
-const sendErrorDevHTML = (err, res) => {
+const sendErrorDevHTML = (err: any, res: Response) => {
   const statusCode = err.statusCode || 500;
   const status = false;
   const message = err.message || "Something went wrong";
@@ -17,7 +18,7 @@ const sendErrorDevHTML = (err, res) => {
   });
 };
 
-const sendErrorProdHTML = (err, res) => {
+const sendErrorProdHTML = (err: any, res: Response) => {
   const statusCode = err.statusCode || 500;
   const status = false;
   const message = err.isOperational ? err.message : "Something went wrong";
@@ -33,7 +34,7 @@ const sendErrorProdHTML = (err, res) => {
   });
 };
 
-const sendErrorDev = (err, res) => {
+const sendErrorDev = (err: any, res: Response) => {
   const statusCode = err.statusCode || 500;
   const status = false;
   const message = err.message || "Something went wrong";
@@ -43,7 +44,7 @@ const sendErrorDev = (err, res) => {
   return res.status(statusCode).json({ status, message, stack, errors });
 };
 
-const sendErrorProd = (err, res) => {
+const sendErrorProd = (err: any, res: Response) => {
   const statusCode = err.statusCode || 500;
   const status = false;
   const message = err.message || "Something went wrong";
@@ -58,7 +59,7 @@ const sendErrorProd = (err, res) => {
   }
 };
 
-const globalErrorHandler = (err, req, res, next) => {
+const globalErrorHandler = (err: any, req: Request, res: Response, next: any) => {
   // Check if the request expects HTML
   if (
     req.headers["content-type"] === "application/html" ||

@@ -8,15 +8,15 @@ const APP_NAME = process.env.APP_NAME || "Car Book";
 
 // Framework
 import express from "express";
-const app = express();
-import expressLayouts from "express-ejs-layouts";
+import type { Application, Request, Response } from 'express'
+const app: Application = express();
 import { join } from "path";
 import pkg from "body-parser";
 const { json: _json, urlencoded: _urlencoded } = pkg;
 import session, { Store } from "express-session";
 import connectSessionSequelize from "connect-session-sequelize";
 const SequelizeStore = connectSessionSequelize(Store);
-import sequelize from "./config/database.js"; // Sequelize instance
+import sequelize from "./config/database.js";
 import multer from "multer";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -64,12 +64,14 @@ app.use(express.static(join(__dirname, "public")));
 app.use(_json());
 app.use(_urlencoded({ extended: false }));
 
-app.use("/", () => {
-  console.log("Welcome to Car Book")
+app.use("/", (req: Request, res: Response) => {
+  res.status(200).json({
+    message: "Welcome to Car Rental Page"
+  })
 });
 app.use('/api', api)
 app.use('/admin_api', admin_api)
-app.use("*", function (req, res) {
+app.use("*", function (req: Request, res: Response) {
   return res.render('errors/default')
 })
 

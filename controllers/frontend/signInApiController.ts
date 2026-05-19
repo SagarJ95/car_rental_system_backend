@@ -5,7 +5,7 @@ import db from "../../config/db.js";
 
 import sequelize from "../../config/database.js";
 // Models
-
+import type { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { Op, QueryTypes, Sequelize } from "sequelize";
 import { compare } from "bcrypt";
@@ -22,12 +22,12 @@ const project_name = process.env.APP_NAME;
 const BASE_URL = process.env.BASE_URL || "http://localhost:4000";
 
 // POST Customer login
-const SignUp = catchAsync(async (req, res) => {
+const SignUp = catchAsync(async (req: Request, res: Response) => {
 
 });
 
 // POST Customer login
-const Login = catchAsync(async (req, res) => {
+const Login = catchAsync(async (req: Request, res: Response) => {
 
 });
 
