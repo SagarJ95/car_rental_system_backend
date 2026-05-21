@@ -64,11 +64,7 @@ app.use(express.static(join(__dirname, "public")));
 app.use(_json());
 app.use(_urlencoded({ extended: false }));
 
-app.use("/", (req: Request, res: Response) => {
-  res.status(200).json({
-    message: "Welcome to Car Rental Page"
-  })
-});
+
 app.use('/api', api)
 app.use('/admin_api', admin_api)
 app.use("*", function (req: Request, res: Response) {
