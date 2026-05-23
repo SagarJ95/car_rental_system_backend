@@ -2,8 +2,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../config/database.js";
 
-const users_profile = sequelize.define(
-    "tbl_users_profile",
+const tbl_cars = sequelize.define(
+    "tbl_cars",
     {
         id: {
             allowNull: false,
@@ -11,49 +11,47 @@ const users_profile = sequelize.define(
             primaryKey: true,
             type: DataTypes.INTEGER,
         },
-        user_id: {
-            type: DataTypes.INTEGER,
+        car_name: {
+            type: DataTypes.STRING,
         },
-        date_of_birth: {
-            type: DataTypes.DATE,
+        mileage: {
+            type: DataTypes.STRING,
         },
-        gender: {
+        transmission: {
             type: DataTypes.ENUM("0", "1"),
-            defaultValue: "1",
-            allowNull: false,
         },
-        photo: {
+        seats: {
             type: DataTypes.STRING,
         },
-        city: {
+        luggage: {
             type: DataTypes.STRING,
         },
-        state: {
-            type: DataTypes.STRING,
+        fuel: {
+            type: DataTypes.ENUM("0", "1", "2", "3"),
         },
-        pincode: {
+        description: {
             type: DataTypes.NUMBER,
         },
-        address_1: {
+        brand_id: {
+            type: DataTypes.INTEGER,
+        },
+        car_number: {
             type: DataTypes.STRING,
         },
-        address_2: {
+        model: {
             type: DataTypes.STRING,
         },
-        driving_license: {
+        color: {
             type: DataTypes.STRING,
         },
-        driving_license_photo: {
+        main_image: {
             type: DataTypes.STRING,
         },
-        aadhar_card: {
-            type: DataTypes.STRING,
+        is_available: {
+            type: DataTypes.INTEGER,
         },
-        mobile_number: {
-            type: DataTypes.STRING,
-        },
-        email_expire_otp_at: {
-            type: DataTypes.DATE,
+        feature_vehicles_status: {
+            type: DataTypes.ENUM("0", "1"),
         },
         status: {
             type: DataTypes.ENUM("0", "1"),
@@ -83,8 +81,8 @@ const users_profile = sequelize.define(
         createdAt: "created_at",
         updatedAt: "updated_at",
         deletedAt: "deleted_at",
-        modelName: "tbl_users_profile",
+        modelName: "tbl_cars",
     }
 );
 
-export default users_profile;
+export default tbl_cars;

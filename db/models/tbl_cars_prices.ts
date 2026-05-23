@@ -2,8 +2,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../config/database.js";
 
-const users_profile = sequelize.define(
-    "tbl_users_profile",
+const tbl_cars_prices = sequelize.define(
+    "tbl_cars_prices",
     {
         id: {
             allowNull: false,
@@ -11,49 +11,17 @@ const users_profile = sequelize.define(
             primaryKey: true,
             type: DataTypes.INTEGER,
         },
-        user_id: {
+        car_id: {
             type: DataTypes.INTEGER,
         },
-        date_of_birth: {
-            type: DataTypes.DATE,
-        },
-        gender: {
-            type: DataTypes.ENUM("0", "1"),
-            defaultValue: "1",
-            allowNull: false,
-        },
-        photo: {
+        per_hours_rate: {
             type: DataTypes.STRING,
         },
-        city: {
+        leasing: {
             type: DataTypes.STRING,
         },
-        state: {
+        per_day_rate: {
             type: DataTypes.STRING,
-        },
-        pincode: {
-            type: DataTypes.NUMBER,
-        },
-        address_1: {
-            type: DataTypes.STRING,
-        },
-        address_2: {
-            type: DataTypes.STRING,
-        },
-        driving_license: {
-            type: DataTypes.STRING,
-        },
-        driving_license_photo: {
-            type: DataTypes.STRING,
-        },
-        aadhar_card: {
-            type: DataTypes.STRING,
-        },
-        mobile_number: {
-            type: DataTypes.STRING,
-        },
-        email_expire_otp_at: {
-            type: DataTypes.DATE,
         },
         status: {
             type: DataTypes.ENUM("0", "1"),
@@ -83,8 +51,8 @@ const users_profile = sequelize.define(
         createdAt: "created_at",
         updatedAt: "updated_at",
         deletedAt: "deleted_at",
-        modelName: "tbl_users_profile",
+        modelName: "tbl_cars_prices",
     }
 );
 
-export default users_profile;
+export default tbl_cars_prices;

@@ -2,54 +2,54 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("tbl_users_profile", {
+    await queryInterface.createTable("tbl_cars", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-      },
-      date_of_birth: {
+      car_name: {
         type: Sequelize.STRING,
       },
-      gender: {
+      mileage: {
+        type: Sequelize.STRING,
+      },
+      transmission: {
         type: Sequelize.ENUM("0", "1"),
       },
-      photo: {
+      seats: {
         type: Sequelize.STRING,
       },
-      city: {
+      luggage: {
         type: Sequelize.STRING,
       },
-      state: {
+      fuel: {
+        type: Sequelize.ENUM("0", "1", "2", "3"),
+      },
+      description: {
         type: Sequelize.STRING,
       },
-      pincode: {
+      brand_id: {
         type: Sequelize.INTEGER,
       },
-      address_1: {
+      car_number: {
         type: Sequelize.STRING,
       },
-      address_2: {
+      model: {
         type: Sequelize.STRING,
       },
-      driving_license: {
+      color: {
         type: Sequelize.STRING,
       },
-      driving_license_photo: {
+      main_image: {
         type: Sequelize.STRING,
       },
-      aadhar_card: {
-        type: Sequelize.STRING,
+      is_available: {
+        type: Sequelize.INTEGER,
       },
-      mobile_number: {
-        type: Sequelize.STRING,
-      },
-      email_expire_otp_at: {
-        type: Sequelize.DATE,
+      feature_vehicles_status: {
+        type: Sequelize.ENUM("0", "1"),
       },
       status: {
         type: Sequelize.ENUM("0", "1"),
@@ -78,6 +78,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("tbl_users_profile");
+    await queryInterface.dropTable("tbl_cars");
   },
 };

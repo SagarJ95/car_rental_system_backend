@@ -6,7 +6,7 @@ dotenv.config({ path: `${process.cwd()}/.env` });
 
 const generateToken = (payload: object) => {
     return jwt.sign(payload, process.env.JWT_SECRET_KEY as string, {
-        expiresIn: "5m",
+        expiresIn: process.env.JWT_EXPIRES_IN,
         algorithm: "HS256",
     });
 };
@@ -35,7 +35,7 @@ const verfiyToken = async (
             token,
             process.env.JWT_SECRET_KEY as string
         );
-
+        console.log(userInfo);
         (req as any).user = userInfo
 
         next();

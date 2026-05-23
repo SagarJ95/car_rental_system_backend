@@ -37,6 +37,8 @@ interface loginInterface {
   password: string
 }
 
+
+
 // POST Users login
 const SignUp = catchAsync(async (req: Request, res: Response) => {
 
@@ -157,7 +159,7 @@ const Login = catchAsync(async (req: Request, res: Response) => {
     }
 
     const token = generateToken({
-      id: checkEmailExits.rows.id,
+      id: checkEmailExits.rows[0].id,
     });
 
     res.status(200).json({
@@ -175,38 +177,9 @@ const Login = catchAsync(async (req: Request, res: Response) => {
   }
 });
 
-/********************************************************* User Profile ************************************************* */
 
-//GET User Profile
-const get_profile = catchAsync(async (req: Request, res: Response) => {
-
-  try {
-
-    const userId: number = (req as any).user?.id;
-
-    let getUserProfile = await db.query(`select * from users as u join tbl_users_profile as 
-                                      tup ON u.id = tup.user_id where tup.user_id = $1 and u.status = $2`, [userId, "1"])
-
-
-    res.status(200).json({
-      message: "get Users Profiles",
-      data: (getUserProfile.rowCount ?? 0) > 0 ? getUserProfile.rows : []
-    })
-  } catch (err: any) {
-    res.status(500).json({
-      message: err.message
-    })
-  }
-})
-
-//Add User Profile
-const add_user_profile = catchAsync(async (req: Request, res: Response) => {
-
-})
 
 export {
   SignUp,
-  Login,
-  get_profile,
-  add_user_profile
+  Login
 };

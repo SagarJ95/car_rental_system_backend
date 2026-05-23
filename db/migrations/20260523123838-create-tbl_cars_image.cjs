@@ -2,54 +2,18 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("tbl_users_profile", {
+    await queryInterface.createTable("tbl_cars_image", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id: {
+      car_id: {
         type: Sequelize.INTEGER,
       },
-      date_of_birth: {
+      car_image: {
         type: Sequelize.STRING,
-      },
-      gender: {
-        type: Sequelize.ENUM("0", "1"),
-      },
-      photo: {
-        type: Sequelize.STRING,
-      },
-      city: {
-        type: Sequelize.STRING,
-      },
-      state: {
-        type: Sequelize.STRING,
-      },
-      pincode: {
-        type: Sequelize.INTEGER,
-      },
-      address_1: {
-        type: Sequelize.STRING,
-      },
-      address_2: {
-        type: Sequelize.STRING,
-      },
-      driving_license: {
-        type: Sequelize.STRING,
-      },
-      driving_license_photo: {
-        type: Sequelize.STRING,
-      },
-      aadhar_card: {
-        type: Sequelize.STRING,
-      },
-      mobile_number: {
-        type: Sequelize.STRING,
-      },
-      email_expire_otp_at: {
-        type: Sequelize.DATE,
       },
       status: {
         type: Sequelize.ENUM("0", "1"),
@@ -78,6 +42,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("tbl_users_profile");
+    await queryInterface.dropTable("tbl_cars_image");
   },
 };
