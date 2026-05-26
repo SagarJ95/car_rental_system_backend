@@ -10,6 +10,8 @@ const project_name = process.env.APP_NAME;
 import type { Request } from "express";
 import path from 'path'
 import fs from 'fs'
+import * as CarsApiController from '../controllers/frontend/CarsApiController.js'
+import * as BlogsApiController from '../controllers/frontend/BlogsApiController.js'
 
 let ProfileStorage = multer.diskStorage({
     destination: function (req: Request, file, cb) {
@@ -49,5 +51,17 @@ router.post('/v1/addUserProfile', verfiyToken, UploadProfile.fields([
     { name: "photo", maxCount: 1 },
     { name: "driving_license_photo", maxCount: 1 },
 ]), ProfileApiController.add_user_profile)
+
+
+/***********************************cars ***************************************************** */
+
+router.post('/v1/getFeatureVehical', CarsApiController.feature_vehicles)
+
+
+/********************************************** Blogs ***************************************** */
+
+router.post('/v1/getBlogsDetailsById/:id', BlogsApiController.getblogsdetailsBasedId)
+
+router.post('/v1/getBlogsDetails', BlogsApiController.shows_blogs)
 
 export default router;
