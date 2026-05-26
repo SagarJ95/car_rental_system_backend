@@ -80,6 +80,8 @@ process.on("uncaughtException", (error) => {
 process.on("unhandledRejection", (reason, promise) => {
 });
 
-app.listen(PORT, () => {
-  console.log("Server Running on " + APP_URL + ":" + PORT);
-});
+// app.listen(PORT, () => {
+//   console.log("Server Running on " + APP_URL + ":" + PORT);
+// });
+
+export default app
