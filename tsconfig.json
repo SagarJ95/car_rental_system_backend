@@ -8,14 +8,13 @@
     // See also https://aka.ms/tsconfig/module
     "module": "nodenext",
     "target": "esnext",
-    // "rootDir": "./",
-    // "outDir": "./dist",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "declaration": false,
+    "sourceMap": true,
     "moduleResolution": "nodenext",
     "esModuleInterop": true,
-    "types": [
-      "node",
-      "jest"
-    ],
+    "types": [],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -44,7 +43,7 @@
     "skipLibCheck": true,
   },
   "include": [
-    "**/*.ts"
+    "src"
   ],
   "exclude": [
     "node_modules",

@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../app";
+import app from "../dist/app.js";
 
 describe("Blogs API", () => {
     it("should return blogs", async () => {
