@@ -29,10 +29,20 @@ import Users from "../../db/models/users.js";
 const feature_vehicles = catchAsync(async (req: Request, res: Response) => {
 
     try {
-        let getFetureVehicales = await db.query(`select id,car_name,model,main_image from tbl_cars  where feature_vehicles_status = $1 and status = $2`, [1, "1"])
+        const { paginationId, limit }: { paginationId: number, limit: number } = req.body
+        let getFetureVehicales = await db.query(`select 
+            id,car_name,model,main_image from tbl_cars 
+            where feature_vehicles_status = $1 and status = $2 and id > $3 ORDER BY id ASC Limit $4`, [1, "1", paginationId ?? 0, limit])
         res.status(200).json({
             message: "get Feature vehicles",
-            data: (getFetureVehicales.rowCount ?? 0) > 0 ? getFetureVehicales.rows : []
+            count: getFetureVehicales.rowCount,
+            data: (getFetureVehicales.rowCount ?? 0) > 0 ? getFetureVehicales.rows : [],
+            nextPaginationId:
+                getFetureVehicales.rows.length > 0
+                    ? getFetureVehicales.rows[
+                        getFetureVehicales.rows.length - 1
+                    ].id
+                    : null
         })
     } catch (err: any) {
         res.status(500).json({
@@ -41,6 +51,39 @@ const feature_vehicles = catchAsync(async (req: Request, res: Response) => {
     }
 })
 
+const getAllCarsDetails = catchAsync(async (req: Request, res: Response) => {
+    try {
+        const { paginationId, limit }: { paginationId: Number, limit: Number } = req.body
+
+        let fetchInfo = await db.query(`select tc.id,tc.car_name,tc.model,tc.main_image,
+            ARRAY_AGG(tci.car_image) as car_images,
+            tcp.per_day_rate as per_day_rate 
+            from tbl_cars as tc 
+            Join tbl_cars_image as tci ON tc.id = tci.car_id 
+            JOIN tbl_cars_prices as tcp ON tc.id = tcp.car_id
+            where tc.id > $1 GROUP BY tc.id,tcp.per_day_rate LIMIT $2 `, [paginationId, limit])
+
+        res.status(200).json({
+            message: "Fetch info successfully",
+            count: fetchInfo.rowCount,
+            data: (fetchInfo.rowCount ?? 0) ? fetchInfo.rows : [],
+            nextPaginationId:
+                fetchInfo.rows.length > 0
+                    ? fetchInfo.rows[
+                        fetchInfo.rows.length - 1
+                    ].id
+                    : null
+        })
+
+
+    } catch (err: any) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+})
+
 export {
-    feature_vehicles
+    feature_vehicles,
+    getAllCarsDetails
 }

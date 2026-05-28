@@ -57,6 +57,7 @@ router.post('/v1/addUserProfile', verfiyToken, UploadProfile.fields([
 
 router.post('/v1/getFeatureVehical', CarsApiController.feature_vehicles)
 
+router.post('/v1/getAllCarsDetails', CarsApiController.getAllCarsDetails)
 
 /********************************************** Blogs ***************************************** */
 

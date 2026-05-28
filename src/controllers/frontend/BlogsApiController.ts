@@ -27,10 +27,12 @@ const BASE_URL = process.env.BASE_URL || "http://localhost:4000";
 const shows_blogs = catchAsync(async (req: Request, res: Response) => {
 
     try {
-
-        let { paginationId }: { paginationId: number | null } = req.body
+        //pageniation
+        let { paginationId, limit }: {
+            paginationId: number | null, limit: number | null
+        } = req.body
         let getblogsVehicales = await db.query(`select id,description,tags,image,status,created_at from tbl_blogs 
-              where status = $1 and id > $2 Limit 2`, ["1", paginationId ?? 0])
+              where status = $1 and id > $2 Limit $3`, ["1", paginationId ?? 0, limit ?? 2])
 
         res.status(200).json({
             message: "get Blogs details",
