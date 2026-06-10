@@ -7,21 +7,11 @@ import sequelize from "../../config/database.js";
 // Models
 import type { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
-import { Op, QueryTypes, Sequelize } from "sequelize";
-import { compare } from "bcrypt";
-import bcrypt from "bcrypt";
-import nodemailer from "nodemailer";
-import moment from "moment";
-import pkg from "jsonwebtoken";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-import path from "path";
-import { generateToken, verfiyToken } from '../../middlewares/jwtTokenWeb.js'
-const project_name = process.env.APP_NAME;
 const BASE_URL = process.env.BASE_URL || "http://localhost:4000";
-import Users from "../../db/models/users.js";
 
 /********************************************************* Feture Vehicles Car ************************************************* */
 
@@ -83,7 +73,42 @@ const getAllCarsDetails = catchAsync(async (req: Request, res: Response) => {
     }
 })
 
+const getPricingList = catchAsync(async (req: Request, res: Response) => {
+    try {
+        let { paginationId, limit }: { paginationId: number, limit: number } = req.body
+        let getAllActiveCar = await db.query(`select tc.id,tc.car_name,tc.main_image,tcp.per_hours_rate,tcp.per_day_rate,tcp.leasing,
+            ROUND(AVG(tcr.rating), 1) AS avg_rating from tbl_cars as tc 
+            JOIN tbl_cars_prices as tcp ON tc.id=tcp.car_id
+            JOIN tbl_cars_review as tcr ON tc.id = tcr.car_id
+            Where tc.id>$1 and tc.status= $2  GROUP BY tc.id,
+                    tc.car_name,
+                    tc.main_image,
+                    tcp.per_hours_rate,
+                    tcp.per_day_rate,
+                    tcp.leasing order by tc.id  limit $3 `, [paginationId, '1', limit])
+
+        res.status(200).json({
+            Message: "Fetch Updated Price",
+            count: getAllActiveCar.rowCount ?? 0,
+            nextPaginationId:
+                getAllActiveCar.rows.length > 0
+                    ? getAllActiveCar.rows[
+                        getAllActiveCar.rows.length - 1
+                    ].id
+                    : null,
+            data: (getAllActiveCar.rowCount ?? 0) ? getAllActiveCar.rows : []
+
+        })
+
+    } catch (err: any) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+})
+
 export {
     feature_vehicles,
-    getAllCarsDetails
+    getAllCarsDetails,
+    getPricingList
 }
