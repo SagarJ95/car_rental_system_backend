@@ -2,57 +2,21 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("tbl_cars", {
+    await queryInterface.createTable("tbl_car_feature", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      car_name: {
-        type: Sequelize.STRING,
-      },
-      mileage: {
-        type: Sequelize.STRING,
-      },
-      transmission: {
-        type: Sequelize.ENUM("0", "1"),
-      },
-      seats: {
-        type: Sequelize.STRING,
-      },
-      luggage: {
-        type: Sequelize.STRING,
-      },
-      fuel: {
-        type: Sequelize.ENUM("0", "1", "2", "3"),
-      },
-      description: {
-        type: Sequelize.STRING,
-      },
-      brand_id: {
+      car_id: {
         type: Sequelize.INTEGER,
-      },
-      car_number: {
-        type: Sequelize.STRING,
-      },
-      model: {
-        type: Sequelize.STRING,
-      },
-      color: {
-        type: Sequelize.STRING,
-      },
-      main_image: {
-        type: Sequelize.STRING,
       },
       feature_id: {
-
-      },
-      is_available: {
         type: Sequelize.INTEGER,
       },
-      feature_vehicles_status: {
-        type: Sequelize.ENUM("0", "1"),
+      feature_status: {
+        type: Sequelize.INTEGER,
       },
       status: {
         type: Sequelize.ENUM("0", "1"),
@@ -81,6 +45,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("tbl_cars");
+    await queryInterface.dropTable("tbl_car_feature");
   },
 };

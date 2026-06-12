@@ -57,9 +57,6 @@ module.exports = {
         model: `Model-${2020 + (i % 6)}`,
 
         color: colors[i % colors.length],
-
-        car_image: `https://picsum.photos/seed/car${i}/600/400`,
-
         is_available: i % 2,
 
         feature_vehicles_status: i % 2 === 0 ? "1" : "0",

@@ -59,6 +59,8 @@ router.post('/v1/getFeatureVehical', CarsApiController.feature_vehicles)
 
 router.post('/v1/getAllCarsDetails', CarsApiController.getAllCarsDetails)
 
+router.post('/v1/getCarDetailsById', CarsApiController.getCarDetailsById)
+
 router.post('/v1/getPricingList', CarsApiController.getPricingList)
 
 /********************************************** Blogs ***************************************** */

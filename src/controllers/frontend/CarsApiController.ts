@@ -73,6 +73,108 @@ const getAllCarsDetails = catchAsync(async (req: Request, res: Response) => {
     }
 })
 
+const getCarDetailsById = catchAsync(async (req: Request, res: Response) => {
+    try {
+        const { id } = req.body;
+
+        if (!id) {
+            return res.status(404).json({
+                message: "Id is Not Found"
+            })
+        }
+
+        const fetchCardetails = await db.query(`SELECT
+                    tc.id AS car_id,
+                    tc.brand_id,
+                    tb.brand_name,
+                    tc.car_name,
+                    tc.mileage,
+
+                    CASE
+                        WHEN tc.transmission = '0' THEN 'Manual'
+                        ELSE 'Automatic'
+                    END AS transmission,
+
+                    tc.seats,
+                    tc.luggage,
+
+                    CASE
+                        WHEN tc.fuel = '0' THEN 'Petrol'
+                        ELSE 'Diesel'
+                    END AS fuel,
+
+                    tc.description,
+
+                    COALESCE(features.feature_list, '[]') AS features,
+                    COALESCE(reviews.review_list, '[]') AS reviews
+
+                FROM tbl_cars tc
+                JOIN tbl_brand tb ON tc.brand_id = tb.id
+
+
+                LEFT JOIN (
+                    SELECT
+                        tcp.car_id,
+                        JSON_AGG(
+                            JSON_BUILD_OBJECT(
+                                'feature_name', tf.feature_name,
+                                'feature_status', tcp.feature_status
+                            )
+                        ) AS feature_list
+                    FROM tbl_car_feature tcp
+                    JOIN tbl_feature tf ON tf.id = tcp.feature_id
+                    GROUP BY tcp.car_id
+                ) features ON features.car_id = tc.id
+
+                LEFT JOIN (
+                    SELECT
+                        tcr.car_id,
+                        JSON_AGG(
+                            JSON_BUILD_OBJECT(
+                                'user_name', CONCAT(u.first_name, ' ', u.last_name),
+                                'rating', tcr.rating,
+                                'review', tcr.review
+                            )
+                        ) AS review_list
+                    FROM tbl_cars_review tcr
+                    JOIN users u ON u.id = tcr.created_by
+                    GROUP BY tcr.car_id
+                ) reviews ON reviews.car_id = tc.id
+
+
+                WHERE tc.id = $1;`, [id])
+
+        const related_car = await db.query(`select
+                JSON_AGG(
+                    JSON_BUILD_OBJECT(
+                        'car_id',tc.id,
+                        'car_name',tc.car_name,
+                        'brand_name',tb.brand_name,
+                        'image',tc.main_image,
+                        'price',tcp.per_day_rate
+                    )
+                ) as related_Car
+                from (
+                    SELECT tc.*
+                    FROM tbl_cars tc
+                    WHERE tc.brand_id = $1
+                    ORDER BY tc.id DESC
+                    LIMIT 3
+                ) tc
+                LEFT JOIN tbl_brand tb ON tc.brand_id = tb.id
+                LEFT JOIN tbl_cars_prices tcp ON tc.id = tcp.car_id  `, [fetchCardetails.rows[0].brand_id])
+
+        res.status(200).json({
+            message: "Fetch Car Details successfully",
+            data: [{ 'car_Details': (fetchCardetails.rowCount ?? 0) ? fetchCardetails.rows : [], 'related_car': (related_car.rowCount ?? 0) ? related_car.rows : [] }]
+        })
+    } catch (err: any) {
+        res.status(500).json({
+            message: err.message
+        })
+    }
+})
+
 const getPricingList = catchAsync(async (req: Request, res: Response) => {
     try {
         let { paginationId, limit }: { paginationId: number, limit: number } = req.body
@@ -110,5 +212,6 @@ const getPricingList = catchAsync(async (req: Request, res: Response) => {
 export {
     feature_vehicles,
     getAllCarsDetails,
-    getPricingList
+    getPricingList,
+    getCarDetailsById
 }
